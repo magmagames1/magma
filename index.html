@@ -1,52 +1,611 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>   <style>
-body {
-  background-image: url('https://as1.ftcdn.net/jpg/06/00/23/60/1000_F_600236029_cXKDjTbQwyEUMZiCzr4ngsrIfEC5z59N.jpg');
-}
-  button,
-input[type="button"],
-input[type="submit"]  {
-        background-color: #2617af; /* Green background */
-        color: white; /* White text */
-        padding: 15px 32px; /* Spacing inside the button */
-        text-align: center; /* Center the text */
-        text-decoration: none; /* Remove underline for potential link-like behavior */
-        display: inline-block; /* Allows for width/height and margin/padding */
-        font-size: 16px; /* Text size */
-        margin: 4px 2px; /* Spacing around the button */
-        cursor: pointer; /* Change cursor to a pointer on hover */
-        border: none; /* Remove default border */
-        border-radius: 8px; /* Slightly rounded corners */
-    }
-</style>
+    <meta charset="UTF-8" />
+    <title>GLACIER EDUCATION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script async src="https://cse.google.com/cse.js?cx=YOUR_CSE_ID"></script>
+
+    <style>
+        :root {
+            --color-primary: #7ad3ff;
+            --color-secondary: #9bdfff;
+            --color-text-light: #c8f1ff;
+            --color-text-dark: black;
+            --bg-dark: black;
+            --bg-semi-transparent: rgba(0, 20, 40, 0.6);
+            --shadow-main: 0 0 15px var(--color-primary), 0 0 25px #54baff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow-x: hidden;
+            background: var(--bg-dark);
+        }
+
+        .page-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .page-section.active { display: flex; }
+
+        #stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+        }
+
+        /* ✓ BIGGER HOMEPAGE BUTTONS */
+        .nav-under-title {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav-under-title button {
+            font-size: 24px;
+            padding: 20px 40px;
+            border-radius: 14px;
+            border: 3px solid var(--color-primary);
+            background: var(--bg-semi-transparent);
+            color: var(--color-text-light);
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 0 12px var(--color-primary);
+            transition: 0.3s;
+        }
+
+        .nav-under-title button:hover {
+            background: rgba(100, 200, 255, 0.9);
+            box-shadow: 0 0 25px var(--color-secondary);
+            transform: scale(1.08);
+            color: var(--color-text-dark);
+        }
+
+        #homePage h1 {
+            font-size: 80px;
+            background: linear-gradient(45deg, #e6faff, var(--color-secondary), #d9f4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s infinite linear;
+            text-shadow: var(--shadow-main);
+            margin-bottom: 5px;
+        }
+
+        #homePage h2 {
+            font-size: 28px;
+            text-shadow: 0 0 10px var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* GAME SEARCH BAR */
+        #gameSearchBox {
+            width: 80%;
+            max-width: 450px;
+            padding: 12px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--color-primary);
+            margin-bottom: 30px;
+            font-size: 18px;
+            background: rgba(0,0,0,0.6);
+            color: var(--color-text-light);
+            text-shadow: 0 0 10px var(--color-primary);
+        }
+
+        .category-title {
+            font-size: 36px;
+            margin: 40px 0 10px;
+            color: #b8eaff;
+            text-shadow: var(--shadow-main);
+        }
+
+        .game-grid {
+            display: grid;
+            /* Adjusted minwidth for better fit with images */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 28px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        /* * NEW STYLES FOR IMAGE BUTTONS 
+        */
+        .gameBtn {
+            height: 150px; /* Fixed height for the button */
+            width: 100%; /* Ensure it takes up grid space */
+            padding: 0; /* Remove padding to maximize image area */
+            display: flex; /* Enable flexbox for inner content (text label) */
+            flex-direction: column;
+            justify-content: flex-end; /* Push content (label) to the bottom */
+            align-items: center;
+            overflow: hidden; /* Hide anything outside the button */
+
+            /* Image properties */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            border-radius: 10px;
+            border: 2px solid var(--color-primary);
+            background-color: var(--bg-semi-transparent); /* Fallback color/overlay background */
+            color: var(--color-text-light);
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Style for the text label at the bottom */
+        .game-name-label {
+            width: 100%;
+            padding: 5px 2px;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--color-text-light);
+            text-shadow: 0 0 5px var(--color-primary);
+            white-space: nowrap; /* Prevent game name from wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Add "..." if text is too long */
+        }
+
+        .gameBtn:hover {
+            transform: scale(1.05);
+            background-color: rgba(150, 220, 255, 0.85); /* Hover background change */
+            box-shadow: 0 0 15px var(--color-secondary);
+        }
+        .gameBtn:hover .game-name-label {
+            color: var(--color-text-dark); /* Change text color on hover */
+            background: rgba(150, 220, 255, 0.9); /* Change label background on hover */
+            text-shadow: none;
+        }
+        /* * END NEW STYLES 
+        */
+
+
+        .proxy-list {
+            width: 90%;
+            max-width: 600px;
+            background: var(--bg-semi-transparent);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--color-primary);
+            color: var(--color-text-light);
+            margin-top: 20px;
+        }
+
+        #search-input {
+            width: 80%; 
+            max-width: 480px;
+            padding: 12px 16px;
+            border-radius: 20px;
+            background: var(--bg-dark);
+            border: 2px solid var(--color-primary);
+            color: var(--color-text-light);
+            text-shadow: 0 0 5px var(--color-primary);
+            font-size: 18px;
+        }
+
+        #search-form button {
+            margin-top: 16px;
+            padding: 10px 20px;
+            background: var(--color-primary);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--color-text-dark);
+            font-weight: bold;
+        }
+
+        /* PASSWORD OVERLAY */
+        #passwordOverlay {
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:black;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            z-index:9999;
+        }
+        #passwordOverlay input {
+            padding: 12px 16px;
+            font-size: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--color-primary);
+            margin-bottom: 20px;
+            outline:none;
+        }
+        #passwordOverlay button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border:none;
+            border-radius:8px;
+            background: var(--color-primary);
+            color: var(--color-text-dark);
+            cursor:pointer;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1 style="color: white;">Magma</h1>
-<form action=cl1on1soccer.html>
-    <input type="submit" value="1 On 1 Soccer" />
-</form>
-<form action=cl10minutestildawn.html>
-    <input type="submit" value="10 minutes till dawn" />
-</form>
+<canvas id="stars"></canvas>
 
-<form action=clangrybirds.html>
-    <input type="submit" value="Angry Birds" />
-</form>
+<div id="passwordOverlay">
+    <input id="passwordInput" type="password" placeholder="Enter password">
+    <button id="passwordSubmit">Submit</button>
+</div>
 
+<section id="homePage" class="page-section">
+    <h1>GLACIER GAMES</h1>
+    <h2>A Cool Place for Unblocked Fun</h2>
 
-<form action=clchessclassic.html>
-    <input type="submit" value="Chess" />
-</form>
+    <div class="nav-under-title">
+        <button data-page="portalPage">GAMES</button>
+        <button data-page="proxyPage">OTHER SITES</button>
+        <button data-page="SearchEnginePage">SEARCH ENGINE</button>
+    </div>
+</section>
 
-    
-<form action=clgoingballs.html>
-    <input type="submit" value="Going balls" />
-</form>
+<section id="portalPage" class="page-section">
+    <h1>GLACIER GAMES</h1>
 
-<form action=clgdlite.html>
-    <input type="submit" value="Geometry dash lite (it has 15 levels!)" />
+    <input id="gameSearchBox" type="text" placeholder="Search games...">
+
+    <div class="category-title">🧗 OBBY / PLATFORMER</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://glacier-34-16795227.codehs.me/" style="background-image: url('images/obby-99-percent-will-lose.jpg');">
+            <span class="game-name-label">Obby 99% Will Lose</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-33-16795246.codehs.me/" style="background-image: url('images/ovo.jpg');">
+            <span class="game-name-label">OVO</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-21-16883081.codehs.me/" style="background-image: url('images/jet-rush.jpg');">
+            <span class="game-name-label">Jet Rush</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-8-16883221.codehs.me/" style="background-image: url('images/stick-man-hook.jpg');">
+            <span class="game-name-label">Stick Man Hook</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-6-16883232.codehs.me/" style="background-image: url('images/vex.jpg');">
+            <span class="game-name-label">Vex</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-61-17070312.codehs.me/" style="background-image: url('images/3dash.jpg');">
+            <span class="game-name-label">3dash</span>
+        </button>
+    </div>
+
+    <div class="category-title">🔫 SHOOTING / ACTION</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://magmagames-1-16794987.codehs.me/" style="background-image: url('images/10-minutes-before-dawn.jpg');">
+            <span class="game-name-label">10 Minutes Before Dawn</span>
+        </button>
+        <button class="gameBtn" data-url="https://magmagames-20-16795251.codehs.me" style="background-image: url('images/ragdoll-archers.jpg');">
+            <span class="game-name-label">Ragdoll Archers</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-15-16883160.codehs.me/" style="background-image: url('images/ragdoll-hit.jpg');">
+            <span class="game-name-label">Ragdoll Hit</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-14-16883175.codehs.me/" style="background-image: url('images/rooftop-snipers.jpg');">
+            <span class="game-name-label">Rooftop Snipers</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-1-16883505.codehs.me/" style="background-image: url('images/zombie-rush.jpg');">
+            <span class="game-name-label">Zombie Rush</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-7-16883227.codehs.me/" style="background-image: url('images/sword-fight.jpg');">
+            <span class="game-name-label">Sword Fight</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-13-16883181.codehs.me/" style="background-image: url('images/rocket-league.jpg');">
+            <span class="game-name-label">Rocket League</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-39-16794997.codehs.me/" style="background-image: url('images/1v1-lol.jpg');">
+            <span class="game-name-label">1V1 lol</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-51-17070069.codehs.me/" style="background-image: url('images/skibidi-shooter.jpg');">
+            <span class="game-name-label">Skibidi shooter</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-55-17070165.codehs.me/" style="background-image: url('images/time-shooter.jpg');">
+            <span class="game-name-label">Time Shooter</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-62-17070342.codehs.me/" style="background-image: url('images/bit-planes.jpg');">
+            <span class="game-name-label">Bit Planes</span>
+        </button>
+    </div>
+
+    <div class="category-title">🚗 DRIVING / RACING</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://magmagames-9-16795087.codehs.me/" style="background-image: url('images/drift-boss.jpg');">
+            <span class="game-name-label">Drift Boss</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-43-16795110.codehs.me/" style="background-image: url('images/drive-mad.jpg');">
+            <span class="game-name-label">Drive Mad</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-35-16795181.codehs.me/" style="background-image: url('images/indian-truck-driver.jpg');">
+            <span class="game-name-label">Indian Truck Driver</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-12-16883185.codehs.me/" style="background-image: url('images/russian-driver-simulator.jpg');">
+            <span class="game-name-label">Russian Driver Simulator</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-53-17070114.codehs.me/" style="background-image: url('images/smash-carts.jpg');">
+            <span class="game-name-label">Smash Carts</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-59-17070300.codehs.me/" style="background-image: url('images/wheelie-bike.jpg');">
+            <span class="game-name-label">Wheelie Bike</span>
+        </button>
+    </div>
+
+    <div class="category-title">🏀 SPORTS / RANDOM PHYSICS</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://glacier-49-16795040.codehs.me/" style="background-image: url('images/basketball-random.jpg');">
+            <span class="game-name-label">Basketball Random</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-11-16883196.codehs.me/" style="background-image: url('images/soccer-random.jpg');">
+            <span class="game-name-label">Soccer Random</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-5-16883445.codehs.me/" style="background-image: url('images/volleyball-random.jpg');">
+            <span class="game-name-label">Volleyball Random</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-34-16795227.codehs.me/" style="background-image: url('images/snow-rider.jpg');">
+            <span class="game-name-label">Snow Rider</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-30-16795283.codehs.me/" style="background-image: url('images/slope.png');">
+            <span class="game-name-label">Slope</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-16886248.codehs.me/" style="background-image: url('images/slope-2-player.jpg');">
+            <span class="game-name-label">Slope 2 Player</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-52-17070091.codehs.me/" style="background-image: url('images/slope-3.jpg');">
+            <span class="game-name-label">Slope 3</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-31-16795272.codehs.me/" style="background-image: url('images/retro-bowl.jpg');">
+            <span class="game-name-label">Retro Bowl</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-56-17070198.codehs.me/" style="background-image: url('images/2-ball-3d.jpg');">
+            <span class="game-name-label">2 ball 3D</span>
+        </button>
+    </div>
+
+    <div class="category-title">🧠 SIMULATION / MANAGEMENT</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://glacier-50-16795063.codehs.me/" style="background-image: url('images/bitlife.jpg');">
+            <span class="game-name-label">Bitlife</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-40-16795156.codehs.me/" style="background-image: url('images/grow-a-garden.jpg');">
+            <span class="game-name-label">Grow A Garden</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-36-16795162.codehs.me/" style="background-image: url('images/idle-breakout.jpg');">
+            <span class="game-name-label">Idle Breakout</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-19-16883104.codehs.me/" style="background-image: url('images/noob-miner.jpg');">
+            <span class="game-name-label">Noob Miner</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-16-16883156.codehs.me/" style="background-image: url('images/test-your-luck.jpg');">
+            <span class="game-name-label">Test Your Luck</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-48-16795027.codehs.me/" style="background-image: url('images/a-small-world-cup.jpg');">
+            <span class="game-name-label">A Small World Cup</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-37-16761333.codehs.me/" style="background-image: url('images/bad-parenting.jpg');">
+            <span class="game-name-label">Bad Parenting</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-17-16883144.codehs.me/" style="background-image: url('images/plants-vs-zombies.jpg');">
+            <span class="game-name-label">Plants Vs Zombies</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-57-17070227.codehs.me/" style="background-image: url('images/uno.jpg');">
+            <span class="game-name-label">UNO</span>
+        </button>
+    </div>
+
+    <div class="category-title">🎮 CLASSIC / ARCADE</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://glacier-47-16795018.codehs.me/" style="background-image: url('images/angry-birds.jpg');">
+            <span class="game-name-label">Angry Birds</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-41-16795135.codehs.me/" style="background-image: url('images/google-dino-game.jpg');">
+            <span class="game-name-label">Google Dino Game</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-9-16883207.codehs.me/" style="background-image: url('images/space-waves.jpg');">
+            <span class="game-name-label">Space Waves</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-10-16883200.codehs.me/" style="background-image: url('images/stackball-io.jpg');">
+            <span class="game-name-label">StackBall.io</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-25-16856791.codehs.me/" style="background-image: url('images/subway-surfers.jpg');">
+            <span class="game-name-label">Subway Surfers</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-46-16795012.codehs.me/" style="background-image: url('images/among-us.jpg');">
+            <span class="game-name-label">Among Us</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-58-17070253.codehs.me/" style="background-image: url('images/wave-dash.jpg');">
+            <span class="game-name-label">Wave dash</span>
+        </button>
+    </div>
+
+    <div class="category-title">😂 MISC / FUN</div>
+    <div class="game-grid">
+        <button class="gameBtn" data-url="https://glacier-27-16795326.codehs.me/" style="background-image: url('images/stickman-duel.jpg');">
+            <span class="game-name-label">Stickman Duel</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-18-16883134.codehs.me/" style="background-image: url('images/opposite-day.jpg');">
+            <span class="game-name-label">Opposite Day</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-20-16883093.codehs.me/" style="background-image: url('images/lock-the-door.jpg');">
+            <span class="game-name-label">Lock The Door</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-28-16795317.codehs.me/" style="background-image: url('images/steal-a-brainrot.jpg');">
+            <span class="game-name-label">Steal A Brainrot</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-4-16883491.codehs.me/" style="background-image: url('images/wrestle-bros.jpg');">
+            <span class="game-name-label">Wrestle Bros</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-2-16883495.codehs.me/#daily" style="background-image: url('images/wordle.jpg');">
+            <span class="game-name-label">Wordle</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-44-16795069.codehs.me/" style="background-image: url('images/crossy-road.jpg');">
+            <span class="game-name-label">Crossy Road</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-3-16886258.codehs.me/" style="background-image: url('images/the-fruit-game.jpg');">
+            <span class="game-name-label">The Fruit Game</span>
+        </button>
+        <button class="gameBtn" data-url="https://glacier-54-17070134.codehs.me/">
+            <span class="">Stick Man GTA City</span>
+        </button>
+    </div>
+</section>
+
+<section id="proxyPage" class="page-section">
+    <h1>PROXIES</h1>
+    <div class="proxy-list">
+        <ul>
+            <li>Stuffmini - <a href="https://stuffmini.playcode.io/" target="_blank">https://stuffmini.playcode.io/</a></li>
+        </ul>
+    </div>
+</section>
+
+<section id="SearchEnginePage" class="page-section">
+    <h1>GLACIER SEARCH ENGINE</h1>
+
+    <form id="search-form">
+        <input id="search-input" type="text" placeholder="Search Google">
+        <br>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="search-results-container">
+        <gcse:searchresults-only></gcse:searchresults-only>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const pages = document.querySelectorAll('.page-section');
+    const navButtons = document.querySelectorAll('[data-page]');
+    const gameButtons = document.querySelectorAll('.gameBtn');
+
+    function showPage(targetId) {
+        pages.forEach(p => p.classList.remove('active'));
+        document.getElementById(targetId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+            showPage(e.target.dataset.page);
+        });
+    });
+
+    gameButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            window.open(btn.dataset.url);
+        });
+    });
+
+    // Game search filter - UPDATED to check the inner <span> text
+    const gameSearch = document.getElementById("gameSearchBox");
+    if (gameSearch) {
+        gameSearch.addEventListener("input", () => {
+            let q = gameSearch.value.toLowerCase();
+            document.querySelectorAll(".gameBtn").forEach(btn => {
+                // Check the text content of the .game-name-label span
+                let gameNameElement = btn.querySelector('.game-name-label');
+                if (gameNameElement) {
+                    let gameName = gameNameElement.innerText.toLowerCase();
+                    // .gameBtn is now a flex container, so use "flex" to show it.
+                    btn.style.display = gameName.includes(q) ? "flex" : "none"; 
+                } else {
+                     // Fallback for buttons without a .game-name-label (though all should have one now)
+                    btn.style.display = btn.innerText.toLowerCase().includes(q) ? "flex" : "none"; 
+                }
+            });
+        });
+    }
+
+    // Google search
+    const searchForm = document.getElementById('search-form');
+    searchForm.addEventListener('submit', e => {
+        e.preventDefault();
+        let q = document.getElementById("search-input").value;
+        if (google?.search?.cse) {
+            google.search.cse.element.getElement('gcse-searchresults-only').execute(q);
+        } else {
+            window.open("https://www.google.com/search?q=" + encodeURIComponent(q));
+        }
+    });
+
+    // Star background
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const numStars = 250;
+
+    function resize() {
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < numStars; i++) {
+        stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5});
+    }
+
+    function animate() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "white";
+        stars.forEach(s => {
+            ctx.beginPath();
+            ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+            ctx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // PASSWORD OVERLAY
+    const overlay = document.getElementById("passwordOverlay");
+    const input = document.getElementById("passwordInput");
+    const submit = document.getElementById("passwordSubmit");
+
+    function checkPassword() {
+        const entered = input.value.trim();
+        if (entered === "ohiosigma") {
+            overlay.style.display = "none";
+            showPage('homePage');
+        } else {
+            alert("Incorrect Password!");
+            input.value = "";
+            input.focus();
+        }
+    }
+
+    submit.addEventListener("click", checkPassword);
+    input.addEventListener("keyup", e => { if(e.key === "Enter") checkPassword(); });
+
+    // Initial check to show the overlay
+    if (overlay.style.display !== "none") {
+        input.focus();
+    }
+});
+</script>
+
 </body>
 </html>
